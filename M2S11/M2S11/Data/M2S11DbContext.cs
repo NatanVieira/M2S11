@@ -6,8 +6,8 @@ namespace M2S11.Data {
 
         private IConfiguration _configuration;
         public DbSet<Musica> Musicas { get; set; }
-        public DbSet<Album> Album { get; set; }
-        public DbSet<Artista> Artista { get; set; }
+        public DbSet<Album> Albums { get; set; }
+        public DbSet<Artista> Artistas { get; set; }
 
         public M2S11DbContext(IConfiguration configuration) {
             _configuration = configuration;
