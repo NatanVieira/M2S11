@@ -8,6 +8,7 @@ namespace M2S11.Data {
         public DbSet<Musica> Musicas { get; set; }
         public DbSet<Album> Albums { get; set; }
         public DbSet<Artista> Artistas { get; set; }
+        public DbSet<Playlist> Playlists { get; set; }
 
         public M2S11DbContext(IConfiguration configuration) {
             _configuration = configuration;
@@ -56,6 +57,19 @@ namespace M2S11.Data {
                 .HasOne<Artista>(al => al.Artista)
                 .WithMany(ar => ar.Albuns)
                 .HasForeignKey(al => al.ArtistaId);
+
+            //Playlists
+            modelBuilder.Entity<Playlist>().ToTable("Playlists");
+            modelBuilder.Entity<Playlist>().HasKey(p => p.Id);
+            modelBuilder.Entity<Playlist>()
+                .Property(p => p.Nome)
+                .HasMaxLength(200)
+                .IsRequired();
+            modelBuilder.Entity<Playlist>()
+                .HasMany<Musica>(p => p.Musicas)
+                .WithOne()
+                .HasForeignKey(m => m.Id);
+        
         }
     }
 }

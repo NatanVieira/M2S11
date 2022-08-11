@@ -9,5 +9,7 @@
         public int AlbumId { get; set; }
         public Album Album { get; set; }
 
+        public List<Playlist> Playlists { get; set; }
+
     }
 }
