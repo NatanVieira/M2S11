@@ -7,5 +7,6 @@ namespace M2S11.DTOs {
         public string Nome { get; set; }
         [Required]
         public int ArtistaId { get; set; }
+
     }
 }

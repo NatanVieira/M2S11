@@ -42,7 +42,16 @@ namespace M2S11.Controllers {
         public ActionResult<Album> Post([FromBody] AlbumDTO body) {
             Album album = new(){
                 Nome = body.Nome,
+                Artista = _context.Artistas.Find(body.ArtistaId),
+                ArtistaId = body.ArtistaId,
             };
+            body.MusicasIds.ForEach(id =>
+            {
+                var musica = _context.Musicas.Find(id);
+                if(musica != null)
+                    album.Musicas.Add(musica);
+            });
+
             _context.Albums.Add(album);
             _context.SaveChanges();
             return Created("api/albums",album);
