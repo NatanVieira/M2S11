@@ -19,12 +19,14 @@ namespace M2S11.Controllers {
         public ActionResult<List<Artista>> Get() {
             return Ok(_context.Artistas.ToList());
         }
+
         //GET com Id
         [HttpGet("{id}")]
         public ActionResult<Artista> Get([FromRoute] int id) {
             var artista = _context.Artistas.Find(id);
             return Ok(artista);
         }
+
         //GET com filtro de nome
         [HttpGet]
         public ActionResult<List<Artista>> Get([FromQuery] string nomeFiltro) {
@@ -34,6 +36,7 @@ namespace M2S11.Controllers {
             }
             return Ok(query.ToList());
         }
+
         //Post
         [HttpPost]
         public ActionResult<Artista> Post([FromBody] ArtistaDTO body) {
@@ -44,6 +47,7 @@ namespace M2S11.Controllers {
             _context.SaveChanges();
             return Created("api/artistas",artista);
         }
+
         //Put
         [HttpPut("{id}")]
         public ActionResult<Artista> Put([FromRoute] int id,
@@ -61,6 +65,7 @@ namespace M2S11.Controllers {
         public ActionResult Delete( [FromRoute] int id) {
             var artista = _context.Artistas.Find(id);
             _context.Artistas.Remove(artista);
+            _context.SaveChanges();
             return Ok();
         }
     }
