@@ -4,6 +4,6 @@ namespace M2S11.DTOs {
     public class PlaylistDTO {
 
         [Required]
-        public string Nome { get; set; }
+        public string? Nome { get; set; }
     }
 }

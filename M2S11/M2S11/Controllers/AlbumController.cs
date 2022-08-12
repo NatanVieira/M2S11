@@ -16,8 +16,12 @@ namespace M2S11.Controllers {
 
         //GET
         [HttpGet]
-        public ActionResult<List<Album>> Get() {
-            return Ok(_context.Albums.ToList());
+        public ActionResult<List<Album>> Get([FromQuery] string nomeFiltro) {
+            var query = _context.Albums.AsQueryable();
+            if(!string.IsNullOrEmpty(nomeFiltro)) {
+                query = query.Where(a => a.Nome == nomeFiltro);
+            }
+            return Ok(query.ToList());
         }
 
         //GET com ID
@@ -25,16 +29,6 @@ namespace M2S11.Controllers {
         public ActionResult<Album> GetById([FromRoute] int id) {
             var album = _context.Albums.Find(id);
             return Ok(album);
-        }
-
-        //GET com nome
-        [HttpGet]
-        public ActionResult<List<Album>> GetByname([FromQuery] string nomeFiltro) {
-            var query = _context.Albums.AsQueryable();
-            if(!string.IsNullOrEmpty(nomeFiltro)) {
-                query = query.Where(a => a.Nome == nomeFiltro);
-            }
-            return Ok(query.ToList());
         }
 
         //Post

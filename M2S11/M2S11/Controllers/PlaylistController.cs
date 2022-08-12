@@ -16,8 +16,12 @@ namespace M2S11.Controllers {
 
         //GET
         [HttpGet]
-        public ActionResult<List<Playlist>> Get() {
-            return Ok(_context.Playlists.ToList());
+        public ActionResult<List<Playlist>> Get([FromQuery] string nomeFiltro) {
+            var query = _context.Playlists.AsQueryable();
+            if(!string.IsNullOrEmpty(nomeFiltro)) {
+                query = query.Where(p => p.Nome == nomeFiltro);
+            }
+            return Ok(query.ToList());
         }
 
         //GET com ID
@@ -25,16 +29,6 @@ namespace M2S11.Controllers {
         public ActionResult<Playlist> GetById([FromRoute] int id) {
             var playlist = _context.Playlists.Find(id);
             return Ok(playlist);
-        }
-
-        //GET com nome
-        [HttpGet]
-        public ActionResult<List<Playlist>> GetByName([FromQuery] string nomeFiltro) {
-            var query = _context.Playlists.AsQueryable();
-            if(!string.IsNullOrEmpty(nomeFiltro)) {
-                query = query.Where(p => p.Nome == nomeFiltro);
-            }
-            return Ok(query.ToList());
         }
 
         //Post
@@ -50,7 +44,7 @@ namespace M2S11.Controllers {
 
         //Put
         [HttpPut("{id}")]
-        public ActionResult<Playlist> Put([FromRoute] int id
+        public ActionResult<Playlist> Put([FromRoute] int id,
                                           [FromBody] PlaylistDTO body) {
             var playlist = _context.Playlists.Find(id);
             if(playlist != null) {

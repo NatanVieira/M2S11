@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore;
 namespace M2S11.Data {
     public class M2S11DbContext : DbContext {
 
-        private IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
         public DbSet<Musica> Musicas { get; set; }
         public DbSet<Album> Albums { get; set; }
         public DbSet<Artista> Artistas { get; set; }
         public DbSet<Playlist> Playlists { get; set; }
-
+        public DbSet<MusicaPlaylist> MusicasPlaylists { get; set; }
         public M2S11DbContext(IConfiguration configuration) {
             _configuration = configuration;
         }
@@ -65,11 +65,22 @@ namespace M2S11.Data {
                 .Property(p => p.Nome)
                 .HasMaxLength(200)
                 .IsRequired();
-            modelBuilder.Entity<Playlist>()
-                .HasMany<Musica>(p => p.Musicas)
-                .WithOne()
-                .HasForeignKey(m => m.Id);
-        
+
+            //MusicasPlaylists
+            modelBuilder.Entity<MusicaPlaylist>().ToTable("MusicasPlaylists");
+            modelBuilder.Entity<MusicaPlaylist>()
+                .HasKey(mp => new { mp.MusicaId,mp.PlaylistId });
+            
+            modelBuilder.Entity<MusicaPlaylist>()
+                .HasOne<Musica>(mp => mp.Musica)
+                .WithMany()
+                .HasForeignKey(m => m.MusicaId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<MusicaPlaylist>()
+                .HasOne<Playlist>(mp => mp.Playlist)
+                .WithMany()
+                .HasForeignKey(mp => mp.PlaylistId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

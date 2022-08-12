@@ -16,8 +16,12 @@ namespace M2S11.Controllers {
 
         //GET
         [HttpGet]
-        public ActionResult<List<Artista>> Get() {
-            return Ok(_context.Artistas.ToList());
+        public ActionResult<List<Artista>> Get([FromQuery] string nomeFiltro) {
+            var query = _context.Artistas.AsQueryable();
+            if(!string.IsNullOrEmpty(nomeFiltro)) {
+                query = query.Where(a => a.Nome == nomeFiltro);
+            }
+            return Ok(query.ToList());
         }
 
         //GET com Id
@@ -25,16 +29,6 @@ namespace M2S11.Controllers {
         public ActionResult<Artista> Get([FromRoute] int id) {
             var artista = _context.Artistas.Find(id);
             return Ok(artista);
-        }
-
-        //GET com filtro de nome
-        [HttpGet]
-        public ActionResult<List<Artista>> Get([FromQuery] string nomeFiltro) {
-            var query = _context.Artistas.AsQueryable();
-            if(!string.IsNullOrEmpty(nomeFiltro)) {
-                query = query.Where(a => a.Nome == nomeFiltro);
-            }
-            return Ok(query.ToList());
         }
 
         //Post

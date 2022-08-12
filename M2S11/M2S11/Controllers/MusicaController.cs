@@ -16,19 +16,6 @@ namespace M2S11.Controllers {
 
         //GET
         [HttpGet]
-        public ActionResult<List<Musica>> Get() {
-            return Ok(_context.Musicas.ToList());
-        }
-
-        //GET com Id
-        [HttpGet("{id}")]
-        public ActionResult<Musica> Get([FromRoute] int id) {
-            var musica = _context.Musicas.Find(id);
-            return Ok(musica);
-        }
-
-        //GET com nome
-        [HttpGet]
         public ActionResult<List<Musica>> Get([FromQuery] string nomeFiltro) {
             var query = _context.Musicas.AsQueryable();
             if(!string.IsNullOrEmpty(nomeFiltro)) {
@@ -36,6 +23,13 @@ namespace M2S11.Controllers {
             }
 
             return Ok(query.ToList());
+        }
+
+        //GET com Id
+        [HttpGet("{id}")]
+        public ActionResult<Musica> Get([FromRoute] int id) {
+            var musica = _context.Musicas.Find(id);
+            return Ok(musica);
         }
 
         //Post

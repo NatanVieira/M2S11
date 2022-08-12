@@ -1,5 +1,3 @@
-using M2S11.Data;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,7 +7,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<M2S11DbContext>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
